@@ -1,0 +1,50 @@
+* {
+    FONT-FAMILY: ARIAL, SANS-SERIF;
+}
+
+body {
+    BACKGROUND-COLOR: LIGHTGRAY;
+}
+
+h2 {
+    COLOR: black;
+}
+
+p {
+    FONT-SIZE: 20PX;
+    COLOR: black;
+}
+
+li {
+    list-style: none;
+    display: inline;
+}
+
+strong {
+    COLOR: black;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+li {
+    display: inline;
+    margin-right: 15px;
+    border: 15px;
+    padding: 15px;
+}
+
+nav {
+    margin-bottom: 40px;
+    margin-top: 40px;
+
+}
+
+nav a {
+    text-decoration: none;
+    color: darkblue;
+    font-weight: bold;
+}

@@ -1,6 +1,65 @@
-body{background-color: antiquewhite;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-li{display: inline;}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    line-height: 1.6;
+    padding: 20px;
+}
 
-ul{border: 2px solid black;}
+h2 {
+    color: green;
+    margin-bottom: 10px;
+}
 
+h3 {
+    color: darkred;
+    margin-bottom: 8px;
+}
+
+h4 {
+    color: red;
+    border: 2px;
+    margin: 2px;
+    padding: 2px;
+}
+
+li {
+    margin-bottom: 5px;
+    padding-left: 15px;
+    list-style-type: square;
+
+}
+
+.button {
+    color: aqua;
+    font-size: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+
+.textbox {
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 5px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 15px;
+
+}
+
+nav a {
+    text-decoration: none;
+    color: darkblue;
+    font-weight: bold;
+
+}
