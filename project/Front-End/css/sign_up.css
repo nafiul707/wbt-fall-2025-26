@@ -1,9 +1,14 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* Sign-up page styles (explicit colors, no gradients) */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  margin: 20px;
-  background: #f6f6f6;
+  margin: 0;
+  background: #f6f9ff;
   color: #333;
 }
 
@@ -13,7 +18,7 @@ body {
   padding: 0 15px;
 }
 
-/* Header / nav (no wrapping, no responsive rules) */
+/* Header / nav */
 .site-header {
   background: #2b7cd3;
   color: #fff;
@@ -24,7 +29,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* intentionally no flex-wrap */
 }
 .logo {
   font-weight: bold;

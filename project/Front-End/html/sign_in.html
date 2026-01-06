@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="../css/sign_in.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="logo" href="index.html">MyTravel</a>
+      <nav class="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="sign_up.html">Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>  
+
+  <main class="container signin-container">
+    <section class="card signin-card">
+      <div class="card-header">
+        <h1>Welcome back</h1>
+        <a class="signup-link" href="sign_up.html">Sign Up</a>
+      </div>
+      <p class="note">Sign in to continue to your account</p>
+
+      <form id="signin-form" novalidate>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <div class="password-field">
+          <input id="password" name="password" type="password" placeholder="Your password" required minlength="6">
+          <button type="button" class="btn toggle-pass" aria-label="Show password">Show</button>
+        </div>
+
+        <div class="inline space-between">
+          <div class="checkbox"><input type="checkbox" id="remember"><label for="remember">Remember me</label></div>
+          <a class="forgot" href="#">Forgot password?</a>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" type="submit">Sign in</button>
+          <button class="btn" type="button" onclick="location.href='sign_up.html'">Create account</button>
+        </div>
+      </form>
+
+    </section>
+  </main>
+
+  <!-- <script>
+    // Toggle password visibility
+    document.querySelector('.toggle-pass').addEventListener('click', function(){
+      const p = document.getElementById('password');
+      if (p.type === 'password') { p.type = 'text'; this.textContent = 'Hide'; }
+      else { p.type = 'password'; this.textContent = 'Show'; }
+    });
+
+    // Simple form validation demo
+    document.getElementById('signin-form').addEventListener('submit', function(e){
+      if (!this.checkValidity()) {
+        e.preventDefault();
+        this.reportValidity();
+        return;
+      }
+      e.preventDefault();
+      // TODO: replace with real sign-in action
+      alert('Signed in (demo)');
+    });
+  </script> -->
+</body>
+</html>

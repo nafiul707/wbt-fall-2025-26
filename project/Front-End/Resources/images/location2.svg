@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
+  <rect width="100%" height="100%" fill="#fff1cc" />
+  <g transform="translate(40,40)">
+    <rect x="0" y="220" width="560" height="80" fill="#f4a261"/>
+    <rect x="0" y="120" width="560" height="120" fill="#93c5fd"/>
+    <path d="M120 180 q40 -80 160 0" fill="#2a9d8f" opacity="0.95"/>
+    <g transform="translate(420,160) rotate(-20)">
+      <rect width="10" height="40" rx="3" fill="#8b5e3c"/>
+      <path d="M-25 0 q25 -40 50 0 q-20 10 -50 0" fill="#2a9d8f"/>
+    </g>
+  </g>
+</svg>
