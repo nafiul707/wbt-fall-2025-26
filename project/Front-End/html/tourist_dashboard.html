@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Dashboard</title>
+    <link rel="stylesheet" href="../css/tourist_dashboard.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <h1 class="logo">🎫 MyTravel</h1>
+                <span class="dashboard-title">Tourist Portal</span>
+            </div>
+            <div class="nav-right">
+                <span class="user-info">
+                    <span class="user-icon">👤</span>
+                    <span id="userName">Tourist</span>
+                </span>
+                <button id="logoutBtn" class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" onclick="showSection(event, 'dashboard')">
+                <span class="menu-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'bookings')">
+                <span class="menu-icon">📅</span>
+                <span>My Bookings</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'tours')">
+                <span class="menu-icon">🌍</span>
+                <span>Available Tours</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'manage-tours')">
+                <span class="menu-icon">📋</span>
+                <span>Manage Tours</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'profile')">
+                <span class="menu-icon">⚙️</span>
+                <span>Profile</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="content-section active">
+            <div class="dashboard-header">
+                <h2>Welcome, <span id="touristName">Tourist</span>!</h2>
+                <p>Explore amazing tours and book your next adventure</p>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">✈️</div>
+                    <div class="stat-content">
+                        <h3>Completed Tours</h3>
+                        <p class="stat-number" id="completedTours">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <h3>Upcoming Bookings</h3>
+                        <p class="stat-number" id="upcomingBookings">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-content">
+                        <h3>Favorite Tours</h3>
+                        <p class="stat-number" id="favoriteTours">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💳</div>
+                    <div class="stat-content">
+                        <h3>Total Spent</h3>
+                        <p class="stat-text">$0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <button class="btn-action" onclick="showSection('tours')">
+                    🔍 Explore Tours
+                </button>
+                <button class="btn-action" onclick="showSection('bookings')">
+                    📅 My Bookings
+                </button>
+            </div>
+
+            <div class="featured-tours">
+                <h3>Featured Tours</h3>
+                <div class="tours-grid" id="featuredToursGrid">
+                    <!-- Tours will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section id="bookings-section" class="content-section">
+            <div class="bookings-manage-wrapper">
+                <h2 id="bookingFormTitle">Confirm a New Booking</h2>
+                
+                <!-- Add/Edit Form -->
+                <div class="form-container">
+                    <form id="bookingForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bookPlace">Place/Hotel Name:</label>
+                                <input type="text" id="bookPlace" placeholder="e.g., Eiffel Tower, Tokyo Hotel" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bookLocation">Location/City:</label>
+                                <input type="text" id="bookLocation" placeholder="e.g., Paris, Tokyo" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bookDate">Booking Date:</label>
+                                <input type="date" id="bookDate" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bookCheckIn">Check-in Date:</label>
+                                <input type="date" id="bookCheckIn" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bookCheckOut">Check-out Date:</label>
+                                <input type="date" id="bookCheckOut" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bookPrice">Total Price ($):</label>
+                                <input type="number" id="bookPrice" placeholder="0.00" step="0.01" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bookStatus">Status:</label>
+                                <select id="bookStatus" required>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookNotes">Notes/Special Requests:</label>
+                            <textarea id="bookNotes" placeholder="Add any special notes" rows="4"></textarea>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" id="bookSubmitBtn" class="btn btn-primary">Confirm Booking</button>
+                            <button type="button" id="bookCancelBtn" class="btn btn-secondary" style="display:none;" onclick="cancelEdit()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="bookSearchInput" placeholder="🔍 Search bookings by place or location...">
+                    <button onclick="clearBookingSearch()" class="btn btn-secondary">Clear Search</button>
+                </div>
+
+                <!-- Bookings Table -->
+                <div class="table-container">
+                    <h2>All Your Bookings</h2>
+                    <table id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Place/Tour</th>
+                                <th>Location</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <!-- Bookings will be populated here -->
+                        </tbody>
+                    </table>
+                    <p id="noBookingsManage" class="no-data">No bookings yet. Book a tour or confirm a place to get started!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tours Section -->
+        <section id="tours-section" class="content-section">
+            <div class="tours-container">
+                <h2>Available Tours</h2>
+                <div class="tours-grid" id="toursGrid">
+                    <!-- Tours will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Manage Tours Section -->
+        <section id="manage-tours-section" class="content-section">
+            <div class="tours-manage-wrapper">
+                <h2 id="tourFormTitle">Book a New Tour</h2>
+                
+                <!-- Add/Edit Form -->
+                <div class="form-container">
+                    <form id="tourForm">
+                        <div class="form-group">
+                            <label for="tourName">Tour Name:</label>
+                            <input type="text" id="tourName" placeholder="e.g., Paris City Tour" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tourDestination">Destination:</label>
+                            <input type="text" id="tourDestination" placeholder="e.g., Paris, France" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tourStart">Start Date:</label>
+                                <input type="date" id="tourStart" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tourEnd">End Date:</label>
+                                <input type="date" id="tourEnd" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tourPrice">Price ($):</label>
+                            <input type="number" id="tourPrice" placeholder="0.00" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tourDescription">Description:</label>
+                            <textarea id="tourDescription" placeholder="Tour details" rows="4"></textarea>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" id="tourSubmitBtn" class="btn btn-primary">Book Tour</button>
+                            <button type="button" id="tourCancelBtn" class="btn btn-secondary" style="display:none;" onclick="cancelTourEdit()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="tourSearchInput" placeholder="🔍 Search tours by name or destination...">
+                    <button onclick="clearTourSearch()" class="btn btn-secondary">Clear Search</button>
+                </div>
+
+                <!-- Tours Table -->
+                <div class="table-container">
+                    <h2>My Tour Bookings</h2>
+                    <table id="tourBookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Tour Name</th>
+                                <th>Destination</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tourBookingsTableBody">
+                            <!-- Tour bookings will be populated here -->
+                        </tbody>
+                    </table>
+                    <p id="noTourBookings" class="no-data">No tour bookings yet. Book a tour to get started!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="content-section">
+            <div class="profile-container">
+                <h2>My Profile</h2>
+                
+                <div class="settings-card">
+                    <h3>Personal Information</h3>
+                    <div class="setting-item">
+                        <label>Full Name:</label>
+                        <p id="profileFullName">-</p>
+                    </div>
+                    <div class="setting-item">
+                        <label>Email:</label>
+                        <p id="profileEmail">-</p>
+                    </div>
+                    <div class="setting-item">
+                        <label>Country:</label>
+                        <p id="profileCountry">-</p>
+                    </div>
+                    <div class="setting-item">
+                        <label>User ID:</label>
+                        <p id="profileUserID">-</p>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Travel Preferences</h3>
+                    <div class="setting-item">
+                        <label>Preferred Start Date:</label>
+                        <p id="profileStartDate">-</p>
+                    </div>
+                    <div class="setting-item">
+                        <label>Interests:</label>
+                        <p id="profileInterests">-</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="alert('Password change functionality coming soon!')">Change Password</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/tourist_dashboard.js"></script>
+</body>
+</html>

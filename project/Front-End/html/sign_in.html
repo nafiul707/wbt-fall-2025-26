@@ -27,6 +27,8 @@
       </div>
       <p class="note">Sign in to continue to your account</p>
 
+      <div id="serverError" style="display: none; color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 4px; margin-bottom: 12px;"></div>
+
       <form id="signin-form" novalidate>
         <label for="email">Email</label>
         <input id="email" name="email" type="email" placeholder="you@example.com" required>
@@ -51,25 +53,6 @@
     </section>
   </main>
 
-  <!-- <script>
-    // Toggle password visibility
-    document.querySelector('.toggle-pass').addEventListener('click', function(){
-      const p = document.getElementById('password');
-      if (p.type === 'password') { p.type = 'text'; this.textContent = 'Hide'; }
-      else { p.type = 'password'; this.textContent = 'Show'; }
-    });
-
-    // Simple form validation demo
-    document.getElementById('signin-form').addEventListener('submit', function(e){
-      if (!this.checkValidity()) {
-        e.preventDefault();
-        this.reportValidity();
-        return;
-      }
-      e.preventDefault();
-      // TODO: replace with real sign-in action
-      alert('Signed in (demo)');
-    });
-  </script> -->
+  <script src="../js/sign_in.js"></script>
 </body>
 </html>

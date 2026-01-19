@@ -23,7 +23,10 @@
     <main class="container">
         <h1>Tourist / Tour Manager Sign Up</h1>
 
-        <form class="signup-form" method="post" novalidate>
+        <div id="serverError" style="display: none; color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 4px; margin-bottom: 12px;"></div>
+        <div id="serverSuccess" style="display: none; color: #155724; background: #d4edda; padding: 10px; border-radius: 4px; margin-bottom: 12px;"></div>
+
+        <form id="signup-form" class="signup-form" method="post" novalidate>
             <fieldset class="card">
                 <legend>Personal Info</legend>
 
@@ -37,17 +40,17 @@
 
                 <label>
                     Full name
-                    <input type="text" name="fullname" required placeholder="Jane Doe">
+                    <input type="text" id="fullname" name="fullname" required placeholder="Jane Doe">
                 </label>
 
                 <label>
                     Email
-                    <input type="email" name="email" required placeholder="you@example.com">
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
                 </label>
 
                 <label>
                     Country
-                    <select name="country" required>
+                    <select id="country" name="country" required>
                         <option value="">Select a country</option>
                         <option>Bangladesh</option>
                         <option>United States</option>
@@ -60,11 +63,11 @@
                 <div id="manager-fields" class="hidden">
                     <label>
                         Company
-                        <input type="text" name="company" placeholder="Company name">
+                        <input type="text" id="company" name="company" placeholder="Company name">
                     </label>
                     <label>
                         Manager ID
-                        <input type="text" name="managerid" placeholder="ID or license">
+                        <input type="text" id="managerid" name="managerid" placeholder="ID or license">
                     </label>
                 </div>
             </fieldset>
@@ -79,12 +82,12 @@
 
                 <label>
                     Password
-                    <input type="password" name="password" required minlength="8" placeholder="Minimum 8 characters">
+                    <input type="password" id="password" name="password" required minlength="8" placeholder="Minimum 8 characters">
                 </label>
 
                 <label>
                     Confirm password
-                    <input type="password" name="confirm" required minlength="8" placeholder="Re-enter password">
+                    <input type="password" id="confirm" name="confirm" required minlength="8" placeholder="Re-enter password">
                 </label>
 
                 <p class="note">You'll use this User ID and password to sign in later.</p>
@@ -121,5 +124,6 @@
     <footer class="site-footer">
         <div class="container">© 2025 MyTravel</div>
     </footer>
+    <script src="../js/sign_up.js"></script>
 </body>
 </html>
