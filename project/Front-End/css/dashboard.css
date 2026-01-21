@@ -230,6 +230,74 @@ body {
     font-weight: 600;
 }
 
+/* Department Overview */
+.department-overview {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.department-overview h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.dept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.dept-card {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e9e9e9 100%);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 4px solid #2196F3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dept-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dept-card.it { border-left-color: #FF6B6B; }
+.dept-card.hr { border-left-color: #4ECDC4; }
+.dept-card.finance { border-left-color: #FFE66D; }
+.dept-card.sales { border-left-color: #95E1D3; }
+.dept-card.marketing { border-left-color: #F38181; }
+
+.dept-name {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.dept-count {
+    font-size: 1.5rem;
+    color: #2196F3;
+    font-weight: 700;
+}
+
+.dept-label {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+.dept-chart-container {
+    position: relative;
+    height: 250px;
+    margin-top: 20px;
+}
+
 /* Quick Actions */
 .quick-actions {
     background: white;
@@ -597,3 +665,508 @@ select:focus {
         width: 100%;
     }
 }
+
+/* ============================================
+   MANAGER ANALYTICS FEATURES STYLES
+   ============================================ */
+
+.analytics-container,
+.bookings-analytics-container,
+.insights-container {
+    padding: 0;
+}
+
+.section-subtitle {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.analytics-grid,
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-card h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.analytics-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 15px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-mini-card {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 5px 0 0 0;
+}
+
+/* Booking Status Styles */
+.booking-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.booking-status-card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.booking-status-card.confirmed {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
+    border-left: 4px solid #4CAF50;
+}
+
+.booking-status-card.pending {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+    border-left: 4px solid #FFC107;
+}
+
+.booking-status-card.cancelled {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%);
+    border-left: 4px solid #F44336;
+}
+
+.booking-status-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.booking-count {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2196F3;
+    margin: 10px 0;
+}
+
+.booking-percent {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Bookings Table */
+.bookings-table-wrapper {
+    overflow-x: auto;
+}
+
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.bookings-table thead {
+    background: #f5f7fa;
+}
+
+.bookings-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.bookings-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.bookings-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.confirmed {
+    background: #4CAF50;
+    color: white;
+}
+
+.status-badge.pending {
+    background: #FFC107;
+    color: white;
+}
+
+.status-badge.cancelled {
+    background: #F44336;
+    color: white;
+}
+
+/* Tour Revenue Items */
+.tours-list,
+.preferences-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tour-revenue-item,
+.preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 3px solid #2196F3;
+}
+
+.tour-info,
+.preference-name {
+    flex: 1;
+}
+
+.tour-name,
+.preference-name {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.tour-bookings,
+.preference-count {
+    display: block;
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.tour-revenue,
+.preference-count {
+    font-weight: 700;
+    color: #2196F3;
+    font-size: 1rem;
+}
+
+.no-data {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Tours Management Section */
+#tours-section h2 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+#tours-section > p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.tours-list-container {
+    margin-top: 40px;
+}
+
+.tours-list-container h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.tour-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.tour-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.tour-card h4 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.tour-delete-btn {
+    background: #F44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.tour-delete-btn:hover {
+    background: #D32F2F;
+    transform: scale(1.05);
+}
+
+.tour-location {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.tour-description {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.tour-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.tour-meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-meta-label {
+    font-size: 12px;
+    color: #999;
+}
+
+.tour-meta-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2196F3;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+#changePasswordForm {
+    padding: 20px;
+}
+
+.modal .form-group {
+    margin-bottom: 15px;
+}
+
+.modal .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal .form-group input:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+}
+
+.error-message {
+    color: #F44336;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.success-message {
+    color: #4CAF50;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.modal .form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal .form-buttons button {
+    flex: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+

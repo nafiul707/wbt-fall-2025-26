@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager Dashboard</title>
     <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -34,6 +35,22 @@
             <a href="#" class="menu-item" onclick="showSection(event, 'users')">
                 <span class="menu-icon">👥</span>
                 <span>Manage Users</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'revenue')">
+                <span class="menu-icon">💰</span>
+                <span>Revenue Analytics</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'bookings')">
+                <span class="menu-icon">📅</span>
+                <span>Booking Status</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'tours')">
+                <span class="menu-icon">🎫</span>
+                <span>Manage Tours</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'insights')">
+                <span class="menu-icon">📈</span>
+                <span>Tourist Insights</span>
             </a>
             <a href="#" class="menu-item" onclick="showSection(event, 'profile')">
                 <span class="menu-icon">⚙️</span>
@@ -82,14 +99,15 @@
                 </div>
             </div>
 
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <button class="btn-action" onclick="resetForm(); showSection(null, 'users');">
-                    ➕ Add New User
-                </button>
-                <button class="btn-action" onclick="showSection(null, 'users')">
-                    👥 View All Users
-                </button>
+            <!-- Department Overview Section -->
+            <div class="department-overview">
+                <h3>📊 Department Overview</h3>
+                <div class="dept-grid" id="departmentGrid">
+                    <!-- Department cards will be populated here -->
+                </div>
+                <div class="dept-chart-container">
+                    <canvas id="deptChart" width="400" height="150"></canvas>
+                </div>
             </div>
         </section>
 
@@ -168,6 +186,240 @@
             </div>
         </section>
 
+        <!-- Revenue Analytics Section -->
+        <section id="revenue-section" class="content-section">
+            <div class="analytics-container">
+                <h2>💰 Revenue Analytics Dashboard</h2>
+                <p class="section-subtitle">Track bookings, revenue, and top performing tours</p>
+
+                <div class="analytics-grid">
+                    <!-- Revenue Summary Cards -->
+                    <div class="stats-row">
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Bookings</p>
+                                <p class="stat-value" id="totalBookings">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">💵</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Revenue</p>
+                                <p class="stat-value" id="totalRevenue">$0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Top Tour</p>
+                                <p class="stat-value" id="topTour">-</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Active Tourists</p>
+                                <p class="stat-value" id="activeTourists">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Chart -->
+                    <div class="analytics-card full-width">
+                        <h3>📈 Revenue Trend by Tour</h3>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top Tours -->
+                    <div class="analytics-card">
+                        <h3>🏆 Top 5 Tours by Revenue</h3>
+                        <div id="topToursListManager" class="tours-list">
+                            <!-- Top tours will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Status Section -->
+        <section id="bookings-section" class="content-section">
+            <div class="bookings-analytics-container">
+                <h2>📅 Booking Status Overview</h2>
+                <p class="section-subtitle">Monitor booking statuses and performance</p>
+
+                <div class="booking-stats">
+                    <div class="booking-status-card confirmed">
+                        <h3>✅ Confirmed</h3>
+                        <p class="booking-count" id="confirmedCount">0</p>
+                        <p class="booking-percent" id="confirmedPercent">0%</p>
+                    </div>
+                    <div class="booking-status-card pending">
+                        <h3>⏳ Pending</h3>
+                        <p class="booking-count" id="pendingCount">0</p>
+                        <p class="booking-percent" id="pendingPercent">0%</p>
+                    </div>
+                    <div class="booking-status-card cancelled">
+                        <h3>❌ Cancelled</h3>
+                        <p class="booking-count" id="cancelledCount">0</p>
+                        <p class="booking-percent" id="cancelledPercent">0%</p>
+                    </div>
+                </div>
+
+                <!-- Booking Status Chart -->
+                <div class="analytics-card full-width">
+                    <h3>📊 Booking Status Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="bookingStatusChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Bookings -->
+                <div class="analytics-card full-width">
+                    <h3>📋 Recent Bookings</h3>
+                    <div class="bookings-table-wrapper">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Tourist</th>
+                                    <th>Tour</th>
+                                    <th>Date</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentBookingsBody">
+                                <!-- Recent bookings will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tourist Insights Section -->
+        <section id="insights-section" class="content-section">
+            <div class="insights-container">
+                <h2>📈 Tourist Growth & Insights</h2>
+                <p class="section-subtitle">Analyze tourist behavior and growth patterns</p>
+
+                <div class="insights-grid">
+                    <!-- Growth Metrics -->
+                    <div class="stats-row">
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Tourists</p>
+                                <p class="stat-value" id="totalTourists">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">🆕</div>
+                            <div class="stat-info">
+                                <p class="stat-label">New This Month</p>
+                                <p class="stat-value" id="newTourists">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">🔄</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Repeat Rate</p>
+                                <p class="stat-value" id="repeatRate">0%</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Avg Spend</p>
+                                <p class="stat-value" id="avgSpend">$0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tourist Growth Chart -->
+                    <div class="analytics-card full-width">
+                        <h3>📊 Tourist Registration Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="touristGrowthChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tourist by Location -->
+                    <div class="analytics-card">
+                        <h3>🌍 Tourists by Location</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="locationChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tourist Preferences -->
+                    <div class="analytics-card">
+                        <h3>❤️ Top Preferences</h3>
+                        <div id="preferencesListManager" class="preferences-list">
+                            <!-- Preferences will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tours Management Section -->
+        <section id="tours-section" class="content-section">
+            <h2>🎫 Manage Tours</h2>
+            <p>Create and manage tour packages for tourists</p>
+
+            <!-- Create Tour Form -->
+            <div class="form-container">
+                <h3>Create New Tour</h3>
+                <form id="tourForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tourName">Tour Name:</label>
+                            <input type="text" id="tourName" placeholder="e.g., Paris City Adventure" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tourLocation">Location:</label>
+                            <input type="text" id="tourLocation" placeholder="e.g., Paris, France" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tourPrice">Price ($):</label>
+                            <input type="number" id="tourPrice" placeholder="1500" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tourDuration">Duration (days):</label>
+                            <input type="number" id="tourDuration" placeholder="5" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="tourDescription">Description:</label>
+                            <textarea id="tourDescription" placeholder="Describe the tour package..." rows="4" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Create Tour</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tours List -->
+            <div class="tours-list-container">
+                <h3>All Created Tours</h3>
+                <div id="managedToursGrid" class="tours-grid">
+                    <!-- Tours will be populated here -->
+                </div>
+                <p id="noToursMsg" class="no-data">No tours created yet. Create your first tour!</p>
+            </div>
+        </section>
+
         <!-- Profile Section -->
         <section id="profile-section" class="content-section">
             <div class="profile-container">
@@ -209,11 +461,42 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="alert('Password change functionality coming soon!')">Change Password</button>
+                <button class="btn btn-primary" onclick="openChangePasswordModal()">Change Password</button>
             </div>
         </section>
     </main>
 
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="close-btn" onclick="closeChangePasswordModal()">&times;</button>
+            </div>
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event, 'manager')">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password (min 8 characters)" minlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="8" required>
+                </div>
+                <div id="passwordError" class="error-message"></div>
+                <div id="passwordSuccess" class="success-message"></div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeChangePasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="../js/dashboard.js"></script>
+    <script src="../js/manager-analytics.js"></script>
 </body>
 </html>

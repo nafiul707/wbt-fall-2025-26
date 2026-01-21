@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tourist Dashboard</title>
     <link rel="stylesheet" href="../css/tourist_dashboard.css">
+    <link rel="stylesheet" href="../css/features-analytics.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -35,17 +36,21 @@
                 <span class="menu-icon">📅</span>
                 <span>My Bookings</span>
             </a>
-            <a href="#" class="menu-item" onclick="showSection(event, 'tours')">
-                <span class="menu-icon">🌍</span>
-                <span>Available Tours</span>
-            </a>
-            <a href="#" class="menu-item" onclick="showSection(event, 'manage-tours')">
-                <span class="menu-icon">📋</span>
-                <span>Manage Tours</span>
-            </a>
             <a href="#" class="menu-item" onclick="showSection(event, 'profile')">
                 <span class="menu-icon">⚙️</span>
                 <span>Profile</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'analytics')">
+                <span class="menu-icon">📊</span>
+                <span>Travel Analytics</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'budget')">
+                <span class="menu-icon">💰</span>
+                <span>Budget Tracker</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection(event, 'achievements')">
+                <span class="menu-icon">🏆</span>
+                <span>Achievements</span>
             </a>
         </div>
     </aside>
@@ -85,25 +90,32 @@
                     <div class="stat-icon">💳</div>
                     <div class="stat-content">
                         <h3>Total Spent</h3>
-                        <p class="stat-text">$0</p>
+                        <p class="stat-text" id="totalSpentDisplay">$0</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <button class="btn-action" onclick="showSection('tours')">
-                    🔍 Explore Tours
-                </button>
-                <button class="btn-action" onclick="showSection('bookings')">
-                    📅 My Bookings
-                </button>
             </div>
 
             <div class="featured-tours">
                 <h3>Featured Tours</h3>
                 <div class="tours-grid" id="featuredToursGrid">
                     <!-- Tours will be loaded here -->
+                </div>
+            </div>
+
+            <div class="manager-tours-section">
+                <h3>🎫 Tours Created by Manager</h3>
+                <div class="tours-grid" id="managerToursGrid">
+                    <p class="no-data">No tours available at the moment</p>
+                </div>
+            </div>
+
+            <div class="favorites-section">
+                <h3>⭐ Your Favorite Tours</h3>
+                <div class="favorites-info">
+                    <p id="favoritesTotalPrice">Total Price: $0</p>
+                </div>
+                <div class="tours-grid" id="favoritesToursGrid">
+                    <p class="no-data">No favorites yet. Click the star icon on tours to add them!</p>
                 </div>
             </div>
         </section>
@@ -207,93 +219,6 @@
             </div>
         </section>
 
-        <!-- Tours Section -->
-        <section id="tours-section" class="content-section">
-            <div class="tours-container">
-                <h2>Available Tours</h2>
-                <div class="tours-grid" id="toursGrid">
-                    <!-- Tours will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Manage Tours Section -->
-        <section id="manage-tours-section" class="content-section">
-            <div class="tours-manage-wrapper">
-                <h2 id="tourFormTitle">Book a New Tour</h2>
-                
-                <!-- Add/Edit Form -->
-                <div class="form-container">
-                    <form id="tourForm">
-                        <div class="form-group">
-                            <label for="tourName">Tour Name:</label>
-                            <input type="text" id="tourName" placeholder="e.g., Paris City Tour" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tourDestination">Destination:</label>
-                            <input type="text" id="tourDestination" placeholder="e.g., Paris, France" required>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="tourStart">Start Date:</label>
-                                <input type="date" id="tourStart" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="tourEnd">End Date:</label>
-                                <input type="date" id="tourEnd" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tourPrice">Price ($):</label>
-                            <input type="number" id="tourPrice" placeholder="0.00" step="0.01" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tourDescription">Description:</label>
-                            <textarea id="tourDescription" placeholder="Tour details" rows="4"></textarea>
-                        </div>
-                        
-                        <div class="form-buttons">
-                            <button type="submit" id="tourSubmitBtn" class="btn btn-primary">Book Tour</button>
-                            <button type="button" id="tourCancelBtn" class="btn btn-secondary" style="display:none;" onclick="cancelTourEdit()">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <input type="text" id="tourSearchInput" placeholder="🔍 Search tours by name or destination...">
-                    <button onclick="clearTourSearch()" class="btn btn-secondary">Clear Search</button>
-                </div>
-
-                <!-- Tours Table -->
-                <div class="table-container">
-                    <h2>My Tour Bookings</h2>
-                    <table id="tourBookingsTable">
-                        <thead>
-                            <tr>
-                                <th>Tour Name</th>
-                                <th>Destination</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tourBookingsTableBody">
-                            <!-- Tour bookings will be populated here -->
-                        </tbody>
-                    </table>
-                    <p id="noTourBookings" class="no-data">No tour bookings yet. Book a tour to get started!</p>
-                </div>
-            </div>
-        </section>
-
         <!-- Profile Section -->
         <section id="profile-section" class="content-section">
             <div class="profile-container">
@@ -331,11 +256,288 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="alert('Password change functionality coming soon!')">Change Password</button>
+                <button class="btn btn-primary" onclick="openChangePasswordModal()">Change Password</button>
+            </div>
+        </section>
+
+        <!-- Travel Analytics Dashboard Section -->
+        <section id="analytics-section" class="content-section">
+            <div class="analytics-container">
+                <h2>📊 Travel Analytics Dashboard</h2>
+                <p class="section-subtitle">Insights into your travel patterns and spending habits</p>
+
+                <div class="analytics-grid">
+                    <!-- Most Visited Countries Chart -->
+                    <div class="analytics-card">
+                        <h3>🌍 Most Visited Countries</h3>
+                        <div class="chart-container">
+                            <canvas id="spendingChart"></canvas>
+                        </div>
+                        <div id="countriesList" class="countries-list">
+                            <!-- Countries will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Spending by Country Chart -->
+                    <div class="analytics-card">
+                        <h3>💵 Spending by Country</h3>
+                        <div class="chart-container">
+                            <canvas id="countrySpendingChart"></canvas>
+                        </div>
+                        <div id="countrySpendingList" class="country-spending-list">
+                            <!-- Country spending will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Monthly Spending Trend -->
+                    <div class="analytics-card full-width">
+                        <h3>📈 Monthly Spending Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tourism Stats -->
+                    <div class="stats-row">
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">✈️</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Trips</p>
+                                <p class="stat-value" id="totalTripsAnalytics">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Spent</p>
+                                <p class="stat-value" id="totalSpentAnalytics">$0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">🌏</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Countries Visited</p>
+                                <p class="stat-value" id="countriesVisited">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Days Traveled</p>
+                                <p class="stat-value" id="daysTraveled">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart Budget Tracker Section -->
+        <section id="budget-section" class="content-section">
+            <div class="budget-container">
+                <h2>💰 Smart Budget Tracker</h2>
+                <p class="section-subtitle">Monitor your spending and get smart alerts</p>
+
+                <div class="budget-setup">
+                    <div class="budget-card">
+                        <h3>Set Your Budget</h3>
+                        <form id="budgetForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="monthlyBudget">Monthly Budget ($):</label>
+                                    <input type="number" id="monthlyBudget" placeholder="5000.00" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="budgetCurrency">Currency:</label>
+                                    <select id="budgetCurrency">
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                        <option value="BDT">BDT (৳)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Budget</button>
+                        </form>
+                    </div>
+
+                    <div class="budget-summary">
+                        <div class="budget-progress">
+                            <div class="progress-header">
+                                <span>Budget Usage</span>
+                                <span id="budgetPercentage">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-details">
+                                <div>
+                                    <span>Spent:</span>
+                                    <strong id="budgetSpent">$0</strong>
+                                </div>
+                                <div>
+                                    <span>Remaining:</span>
+                                    <strong id="budgetRemaining">$0</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budget Alerts -->
+                <div class="alerts-section">
+                    <h3>⚠️ Smart Alerts</h3>
+                    <div id="budgetAlerts" class="alerts-container">
+                        <!-- Alerts will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Expense Breakdown -->
+                <div class="expense-breakdown">
+                    <h3>📋 Expense Breakdown</h3>
+                    <div class="expense-items" id="expenseItems">
+                        <!-- Expenses will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements & Gamification Section -->
+        <section id="achievements-section" class="content-section">
+            <div class="achievements-container">
+                <h2>🏆 Travel Achievements & Badges</h2>
+                <p class="section-subtitle">Unlock achievements as you explore the world</p>
+
+                <div class="achievements-progress">
+                    <div class="progress-stat">
+                        <div class="progress-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+                                <circle cx="50" cy="50" r="45" class="progress-value" id="toursProgressCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="progress-number" id="toursProgressNum">0</span>
+                                <span class="progress-label">Tours Booked</span>
+                            </div>
+                        </div>
+                        <p class="progress-goal">Goal: 10 tours</p>
+                    </div>
+
+                    <div class="progress-stat">
+                        <div class="progress-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+                                <circle cx="50" cy="50" r="45" class="progress-value" id="spendingProgressCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="progress-number" id="spendingProgressNum">$0</span>
+                                <span class="progress-label">Total Spending</span>
+                            </div>
+                        </div>
+                        <p class="progress-goal">Goal: $10,000</p>
+                    </div>
+
+                    <div class="progress-stat">
+                        <div class="progress-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+                                <circle cx="50" cy="50" r="45" class="progress-value" id="countriesProgressCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="progress-number" id="countriesProgressNum">0</span>
+                                <span class="progress-label">Countries Visited</span>
+                            </div>
+                        </div>
+                        <p class="progress-goal">Goal: 5 countries</p>
+                    </div>
+
+                    <div class="progress-stat">
+                        <div class="progress-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+                                <circle cx="50" cy="50" r="45" class="progress-value" id="reviewsProgressCircle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="progress-number" id="reviewsProgressNum">0</span>
+                                <span class="progress-label">Reviews Written</span>
+                            </div>
+                        </div>
+                        <p class="progress-goal">Goal: 5 reviews</p>
+                    </div>
+                </div>
+
+                <!-- Badges Section -->
+                <div class="badges-section">
+                    <h3>🎖️ Earned Badges</h3>
+                    <div class="badges-grid" id="badgesGrid">
+                        <!-- Badges will be dynamically generated -->
+                    </div>
+                    <p id="noBadgesMsg" class="no-data">Keep traveling to earn badges!</p>
+                </div>
+
+                <!-- Leaderboard (Optional Fun Feature) -->
+                <div class="leaderboard-section">
+                    <h3>🌟 Your Achievements Summary</h3>
+                    <div class="achievement-stats">
+                        <div class="achievement-stat-item">
+                            <span class="achievement-icon">🎯</span>
+                            <div>
+                                <p class="achievement-stat-label">Achievement Level</p>
+                                <p class="achievement-stat-value" id="achievementLevel">Beginner</p>
+                            </div>
+                        </div>
+                        <div class="achievement-stat-item">
+                            <span class="achievement-icon">⭐</span>
+                            <div>
+                                <p class="achievement-stat-label">Total Points</p>
+                                <p class="achievement-stat-value" id="totalPoints">0</p>
+                            </div>
+                        </div>
+                        <div class="achievement-stat-item">
+                            <span class="achievement-icon">🏅</span>
+                            <div>
+                                <p class="achievement-stat-label">Badges Earned</p>
+                                <p class="achievement-stat-value" id="badgesCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="close-btn" onclick="closeChangePasswordModal()">&times;</button>
+            </div>
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event, 'tourist')">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password (min 8 characters)" minlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="8" required>
+                </div>
+                <div id="passwordError" class="error-message"></div>
+                <div id="passwordSuccess" class="success-message"></div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeChangePasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="../js/tourist_dashboard.js"></script>
+    <script src="../js/features-analytics.js"></script>
 </body>
 </html>

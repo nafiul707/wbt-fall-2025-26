@@ -7,8 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     checkSession();
     loadManagerProfile();
     loadUsers();
+    loadManagedTours();
     setupEventListeners();
     updateStats();
+    
+    // Initialize manager analytics features
+    initializeManagerAnalytics();
 });
 
 // Check if user is logged in
@@ -48,6 +52,10 @@ function setupEventListeners() {
     if (searchInput) {
         searchInput.addEventListener('keyup', handleSearch);
     }
+    const tourForm = document.getElementById('tourForm');
+    if (tourForm) {
+        tourForm.addEventListener('submit', handleTourSubmit);
+    }
     document.getElementById('logoutBtn').addEventListener('click', logout);
 }
 
@@ -83,8 +91,8 @@ function displayUsers() {
             <td>${user.id}</td>
             <td>${user.user_name || user.name || 'N/A'}</td>
             <td>${user.email}</td>
-            <td>${user.userid || 'N/A'}</td>
-            <td>${user.role || 'N/A'}</td>
+            <td>${user.phone || 'N/A'}</td>
+            <td>${user.department || 'N/A'}</td>
             <td>
                 <div class="action-buttons">
                     <button class="btn-edit" onclick="editUser(${user.id})">Edit</button>
@@ -292,6 +300,106 @@ function updateStats() {
     
     // Count active users (all users in this case)
     document.getElementById('activeUsers').textContent = users.length;
+    
+    // Update department overview
+    updateDepartmentOverview();
+}
+
+// Update department overview with interactive cards and chart
+function updateDepartmentOverview() {
+    const departmentCounts = {};
+    const departments = ['IT', 'HR', 'Finance', 'Sales', 'Marketing'];
+    
+    // Initialize all departments
+    departments.forEach(dept => {
+        departmentCounts[dept] = 0;
+    });
+    
+    // Count users by department
+    users.forEach(user => {
+        if (user.department && departmentCounts.hasOwnProperty(user.department)) {
+            departmentCounts[user.department]++;
+        }
+    });
+    
+    // Render department cards
+    const gridDiv = document.getElementById('departmentGrid');
+    gridDiv.innerHTML = departments.map(dept => `
+        <div class="dept-card ${dept.toLowerCase()}" onclick="filterByDepartment('${dept}')">
+            <div class="dept-name">${dept}</div>
+            <div class="dept-count">${departmentCounts[dept]}</div>
+            <div class="dept-label">Users</div>
+        </div>
+    `).join('');
+    
+    // Initialize department chart
+    initializeDepartmentChart(departmentCounts, departments);
+}
+
+// Initialize department distribution chart
+let deptChart = null;
+function initializeDepartmentChart(counts, departments) {
+    const ctx = document.getElementById('deptChart');
+    if (!ctx || typeof Chart === 'undefined') return;
+    
+    if (deptChart) deptChart.destroy();
+    
+    const chartData = departments.map(d => counts[d]);
+    const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#F38181'];
+    
+    deptChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: departments,
+            datasets: [{
+                label: 'Users by Department',
+                data: chartData,
+                backgroundColor: colors,
+                borderColor: colors,
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+// Filter users by department
+function filterByDepartment(department) {
+    const filtered = users.filter(u => u.department === department);
+    const tableBody = document.getElementById('usersTableBody');
+    
+    if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center">No users in ${department}</td></tr>`;
+        return;
+    }
+    
+    tableBody.innerHTML = filtered.map(user => `
+        <tr>
+            <td>${user.id}</td>
+            <td>${user.user_name || user.name || 'N/A'}</td>
+            <td>${user.email}</td>
+            <td>${user.phone || 'N/A'}</td>
+            <td>${user.department || 'N/A'}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-edit" onclick="editUser(${user.id})">Edit</button>
+                    <button class="btn-delete" onclick="deleteUser(${user.id})">Delete</button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+    
+    showSection(null, 'users');
 }
 
 // Validate email
@@ -307,3 +415,202 @@ function logout() {
         window.location.href = 'sign_in.html';
     }
 }
+
+// ============================================
+// TOUR MANAGEMENT FUNCTIONS
+// ============================================
+
+const MANAGED_TOURS_KEY = 'managerCreatedTours';
+
+// Load managed tours from localStorage
+function loadManagedTours() {
+    const toursDiv = document.getElementById('managedToursGrid');
+    const noToursMsg = document.getElementById('noToursMsg');
+    
+    if (!toursDiv) return;
+    
+    const tours = JSON.parse(localStorage.getItem(MANAGED_TOURS_KEY)) || [];
+    
+    if (tours.length === 0) {
+        toursDiv.innerHTML = '';
+        noToursMsg.style.display = 'block';
+        return;
+    }
+    
+    noToursMsg.style.display = 'none';
+    toursDiv.innerHTML = tours.map(tour => `
+        <div class="tour-card">
+            <div class="tour-header">
+                <h4>${tour.name}</h4>
+                <button class="tour-delete-btn" onclick="deleteTour(${tour.id})">Delete</button>
+            </div>
+            <p class="tour-location">📍 ${tour.location}</p>
+            <p class="tour-description">${tour.description}</p>
+            <div class="tour-meta">
+                <div class="tour-meta-item">
+                    <span class="tour-meta-label">Price</span>
+                    <span class="tour-meta-value">$${parseFloat(tour.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+                <div class="tour-meta-item">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">${tour.duration} days</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Handle tour form submission
+function handleTourSubmit(e) {
+    e.preventDefault();
+    
+    const tourName = document.getElementById('tourName').value.trim();
+    const tourLocation = document.getElementById('tourLocation').value.trim();
+    const tourPrice = document.getElementById('tourPrice').value.trim();
+    const tourDuration = document.getElementById('tourDuration').value.trim();
+    const tourDescription = document.getElementById('tourDescription').value.trim();
+    
+    if (!tourName || !tourLocation || !tourPrice || !tourDuration || !tourDescription) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    try {
+        const tours = JSON.parse(localStorage.getItem(MANAGED_TOURS_KEY)) || [];
+        
+        const newTour = {
+            id: Date.now(),
+            name: tourName,
+            location: tourLocation,
+            price: parseFloat(tourPrice),
+            priceNum: parseFloat(tourPrice),
+            duration: parseInt(tourDuration),
+            description: tourDescription,
+            createdAt: new Date().toISOString(),
+            createdBy: managerData.email
+        };
+        
+        tours.push(newTour);
+        localStorage.setItem(MANAGED_TOURS_KEY, JSON.stringify(tours));
+        
+        alert('Tour created successfully!');
+        document.getElementById('tourForm').reset();
+        loadManagedTours();
+    } catch (error) {
+        alert('Error creating tour: ' + error.message);
+    }
+}
+
+// Delete a tour
+function deleteTour(tourId) {
+    if (!confirm('Are you sure you want to delete this tour? Tourists won\'t be able to see or book it anymore.')) {
+        return;
+    }
+    
+    try {
+        let tours = JSON.parse(localStorage.getItem(MANAGED_TOURS_KEY)) || [];
+        tours = tours.filter(t => t.id !== tourId);
+        localStorage.setItem(MANAGED_TOURS_KEY, JSON.stringify(tours));
+        
+        alert('Tour deleted successfully!');
+        loadManagedTours();
+    } catch (error) {
+        alert('Error deleting tour: ' + error.message);
+    }
+}
+// Password Change Functions
+function openChangePasswordModal() {
+    document.getElementById('changePasswordModal').classList.add('active');
+    document.getElementById('passwordError').classList.remove('show');
+    document.getElementById('passwordSuccess').classList.remove('show');
+    document.getElementById('changePasswordForm').reset();
+}
+
+function closeChangePasswordModal() {
+    document.getElementById('changePasswordModal').classList.remove('active');
+    document.getElementById('changePasswordForm').reset();
+}
+
+function handleChangePassword(event, userType) {
+    event.preventDefault();
+    
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const errorDiv = document.getElementById('passwordError');
+    const successDiv = document.getElementById('passwordSuccess');
+    
+    errorDiv.classList.remove('show');
+    successDiv.classList.remove('show');
+    
+    // Validation
+    if (newPassword !== confirmPassword) {
+        errorDiv.textContent = 'New passwords do not match';
+        errorDiv.classList.add('show');
+        return;
+    }
+    
+    if (newPassword === currentPassword) {
+        errorDiv.textContent = 'New password must be different from current password';
+        errorDiv.classList.add('show');
+        return;
+    }
+    
+    if (newPassword.length < 8) {
+        errorDiv.textContent = 'Password must be at least 8 characters';
+        errorDiv.classList.add('show');
+        return;
+    }
+    
+    // Get current user data
+    const session = localStorage.getItem('userSession');
+    if (!session) {
+        errorDiv.textContent = 'Session expired. Please log in again.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    
+    try {
+        const sessionData = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Find user
+        const userIndex = users.findIndex(u => u.email === sessionData.email);
+        if (userIndex === -1) {
+            errorDiv.textContent = 'User not found';
+            errorDiv.classList.add('show');
+            return;
+        }
+        
+        // Verify current password
+        if (users[userIndex].password !== currentPassword) {
+            errorDiv.textContent = 'Current password is incorrect';
+            errorDiv.classList.add('show');
+            return;
+        }
+        
+        // Update password
+        users[userIndex].password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        successDiv.textContent = 'Password changed successfully!';
+        successDiv.classList.add('show');
+        
+        // Close modal after 2 seconds
+        setTimeout(() => {
+            closeChangePasswordModal();
+        }, 2000);
+        
+    } catch (error) {
+        errorDiv.textContent = 'Error: ' + error.message;
+        errorDiv.classList.add('show');
+    }
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('changePasswordModal');
+    if (event.target === modal) {
+        closeChangePasswordModal();
+    }
+});
