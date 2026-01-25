@@ -234,4 +234,8 @@ This repository represents coursework for the WBT Fall 2025-26 semester. Each se
 
 ---
 
+<<<<<<< HEAD
 *Last Updated: January 22, 2026*
+=======
+*Last Updated: January 22, 2026*
+>>>>>>> dcc9414f07c9f0ef3075b153e0a3d5d832c78faf
